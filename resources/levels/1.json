@@ -1,0 +1,12 @@
+{
+	"balls": 20,
+	"grid":[
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
+		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]]
+	]
+}

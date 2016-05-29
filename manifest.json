@@ -1,0 +1,16 @@
+{
+  "appID": "1d78f80eea9940e9896f349bb8f86468",
+  "dependencies": {
+    "devkit-core": "https://github.com/gameclosure/devkit-core#4.5.1"
+  },
+  "shortName": "BubbleShooter",
+  "studio": {
+    "domain": "xogames.org",
+    "name": "XO games",
+    "stagingDomain": "kucherenko.email@gmail.com"
+  },
+  "supportedOrientations": [
+    "portrait"
+  ],
+  "title": "Bubble Shooter"
+}
