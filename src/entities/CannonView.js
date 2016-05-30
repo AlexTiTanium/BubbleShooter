@@ -24,6 +24,8 @@ exports = Class(ui.View, function(supr) {
         supr(this, 'init', [opts]);
 
         this.balls = superview.balls;
+        this.shootDelay = config.shootDelay;
+        this.shootDelayDelta = config.shootDelay;
 
         this.build(config);
 
@@ -132,7 +134,10 @@ exports = Class(ui.View, function(supr) {
      * Mouse/finger up, cannon will shoot
      */
     this.shot = function(point) {
+
         this.updateTarget(point);
+        if (this.shootDelayDelta < this.shootDelay) return;
+        this.shootDelayDelta = 0;
 
         this.currentBall.style.anchorY = 0;
         this.currentBall.style.anchorX = 0;
@@ -156,9 +161,10 @@ exports = Class(ui.View, function(supr) {
      */
     this.update = function(dt) {
 
+        this.shootDelayDelta = Math.min(this.shootDelayDelta + dt, this.shootDelay);
+
         var targetVector = new Vec2D(this.target).minus(new Vec2D(this.position));
         var angle = Math.atan2(targetVector.y, targetVector.x) - Math.atan2(this.upVector.y, this.upVector.x);
-
 
         if (angle > 1 || angle < -1) { // ~65 defrees limit
             return;

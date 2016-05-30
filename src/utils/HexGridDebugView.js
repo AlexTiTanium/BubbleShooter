@@ -34,25 +34,59 @@ exports = Class(ui.View, function(supr) {
 
     this.drawHex = function(ctx, hex) {
 
+        // if (hex.ball) {
+        //     return;
+        // }
+
+        //var hex = he.grid.pixelToHex(he.center);
+
         ctx.strokeStyle = "#000";
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 1;
 
         ctx.beginPath();
 
         ctx.moveTo(hex.vertices[0].x, hex.vertices[0].y);
-        ctx.lineTo(hex.vertices[1].x, hex.vertices[1].y);
-        ctx.lineTo(hex.vertices[2].x, hex.vertices[2].y);
-        ctx.lineTo(hex.vertices[3].x, hex.vertices[3].y);
-        ctx.lineTo(hex.vertices[4].x, hex.vertices[4].y);
-        ctx.lineTo(hex.vertices[5].x, hex.vertices[5].y);
+        for (var i = 1; i < 6; i++) {
+            ctx.lineTo(hex.vertices[i].x, hex.vertices[i].y);
+        }
 
-        ctx.fillStyle = '#fff';
+        if (hex.underBall) {
+            ctx.fillStyle = 'orange';
+            hex.underBall = false;
+        } else {
+            ctx.fillStyle = '#fff';
+        }
+
+        if (hex.neighborCheck) {
+            ctx.fillStyle = 'green';
+            hex.neighborCheck = false;
+        }
+
+        if (hex.checkColor) {
+            ctx.fillStyle = 'red';
+        }
+
+        if (hex.checkDetach) {
+            ctx.fillStyle = 'grey';
+        }
+
         ctx.fill();
         ctx.closePath();
         ctx.stroke();
 
-        ctx.font = "8px";
+        ctx.font = "2px";
         ctx.fillStyle = "#000";
-        ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x, hex.center.y);
+
+        //console.log(hexx);
+        ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
+        // ctx.fillText("(" + Math.round(d.q) + "," + Math.round(d.r) + ")", hex.center.x - 12, hex.center.y + 3);
+
+        // var c = hex.grid.hexToPixel(hex);
+        // ctx.fillText("(" + c.x + ")", hex.center.x - 12, hex.center.y + 3);
+
+        // var d = hex.grid.pixelToHex(hex.center);
+        // ctx.fillText("(" + d.q + "," + d.r + ")", hex.center.x - 12, hex.center.y + 3);
+
+        //ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
     };
 });

@@ -1,9 +1,9 @@
 exports = Class(function(supr) {
 
     /**
-     * init. This is  pointy topped hex!!
+     * init. This is  pointy topped odd-r hex!!
      */
-    this.init = function(col, row, radius) {
+    this.init = function(col, row, radius, grid) {
 
         this.radius = radius;
 
@@ -12,10 +12,13 @@ exports = Class(function(supr) {
         this.side = this.radius * 3 / 2;
 
         // Offset cordinates system
-        this.col = col; // cell's horizontal grid coordinate
-        this.row = row; // cell's vertical grid coordinate
+        this.col = col; //  X
+        this.row = row; //  Y
 
         this.isOdd = this.row % 2
+
+        this.grid = grid;
+        this.ball = null; // Hex is empty
 
         this.center = {
             x: this.width / 2 + (this.width * this.col) + (this.isOdd * this.width / 2),

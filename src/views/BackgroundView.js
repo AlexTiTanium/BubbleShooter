@@ -40,11 +40,11 @@ exports = Class(View, function(supr) {
             y: this.style.height - Config.bg_left.height * GC.app.backgroundAspect
         }));
 
-        this.head = new ImageView(merge(Config.head, {
-            superview: this.getSuperview(),
-            scale: GC.app.backgroundAspect,
-            zIndex: 1
-        }));
+        // this.head = new ImageView(merge(Config.head, {
+        //     superview: this.getSuperview(),
+        //     scale: GC.app.backgroundAspect,
+        //     zIndex: 1
+        // }));
 
         this.background = new ImageView(merge(Config.background, {
             superview: this,

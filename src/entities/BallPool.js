@@ -1,5 +1,6 @@
 import ui.ViewPool;
 import src.utils.Random as Random;
+import src.entities.BallView as BallView;
 import src.Config as Config;
 
 exports = Class(ui.ViewPool, function(supr) {
@@ -11,6 +12,7 @@ exports = Class(ui.ViewPool, function(supr) {
 
         opts = merge(config, {
             superview: superview,
+            ctor: BallView,
             initOpts: merge(config.initOpts, {
                 superview: superview,
                 zIndex: 11
@@ -19,6 +21,7 @@ exports = Class(ui.ViewPool, function(supr) {
 
         this.types = config.types;
         this.balls = [];
+        this.grid = superview.grid;
 
         supr(this, 'init', [opts]);
     };
@@ -37,7 +40,7 @@ exports = Class(ui.ViewPool, function(supr) {
 
         var ballConfig = Config.balls[type];
 
-        ball.setup(type, ballConfig, hex);
+        ball.setup(type, ballConfig, this.grid, hex);
         this.balls.push(ball);
 
         return ball;

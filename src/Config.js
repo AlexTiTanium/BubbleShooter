@@ -1,5 +1,3 @@
-import src.entities.BallView as BallView;
-
 exports = {
 
     // Base game dimension
@@ -11,7 +9,7 @@ exports = {
 
     board: {
         columns: 10,
-        rows: 10,
+        rows: 16,
         radius: 15,
         baseWidth: 576
     },
@@ -19,7 +17,7 @@ exports = {
     cannon: {
 
         ballWindowYoffset: 27,
-
+        shootDelay: 380,
         barrel: {
             autoStart: true,
             width: 70, //130,
@@ -36,7 +34,6 @@ exports = {
     },
 
     ballPool: {
-        ctor: BallView,
         initCount: 120,
         initOpts: {
             width: 25,
