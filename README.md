@@ -8,7 +8,7 @@ Make release
 ```
 sudo apt-get install openjdk-7-jre-headless
 sudo npm install -g devkit
-git clone https://github.com/AlexTiTanium/ClassicSpaceShooter.git ./
+git clone https://github.com/AlexTiTanium/BubbleShooter.git ./
 
 devkit install
 devkit release browser-desktop
