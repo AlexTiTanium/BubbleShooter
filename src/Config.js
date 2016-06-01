@@ -47,7 +47,7 @@ exports = {
             width: 25,
             height: 25
         },
-        types: ['blue', 'green', 'red', 'purpure', 'yellow']
+        types: ['blue', 'green', 'red', 'purple', 'yellow']
     },
 
     balls: {
@@ -63,7 +63,7 @@ exports = {
             image: 'resources/images/balls/ball_red.png',
             score: 20
         },
-        "purpure": {
+        "purple": {
             image: 'resources/images/balls/ball_purpure.png',
             score: 25
         },
@@ -79,33 +79,39 @@ exports = {
 
     particles: {
 
-        blue_big: ["big.png"],
-        blue_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
-        blue_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png", "small_6.png"],
+        sizes: {
+            big: [40, 40],
+            mid: [15, 15],
+            small: [7, 7]
+        },
 
-        gold_big: ["big.png"],
-        gold_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
-        gold_small: ["small.png", "small_2.png", "small_3.png", "small_4.png"],
+        path: 'resources/images/particles/',
 
-        green_big: ["big.png"],
-        greene_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
-        green_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
+        items: {
+            blue_big: ["big.png"],
+            blue_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+            blue_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png", "small_6.png"],
 
-        purple_big: ["big.png"],
-        purplee_mid: ["mid.png", "mid_2.png"],
-        purple_small: ["small.png", "small_2.png", "small_3.png"],
+            gold_big: ["big.png"],
+            gold_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+            gold_small: ["small.png", "small_2.png", "small_3.png", "small_4.png"],
 
-        red_big: ["big.png"],
-        red_mid: ["mid.png", "mid_2.png", "mid_3.png"],
-        red_small: ["small.png", "small_2.png", "small_3.png"],
+            green_big: ["big.png"],
+            green_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+            green_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
 
-        red_big: ["big.png"],
-        red_mid: ["mid.png", "mid_2.png", "mid_3.png"],
-        red_small: ["small.png", "small_2.png", "small_3.png"],
+            purple_big: ["big.png"],
+            purple_mid: ["mid.png", "mid_2.png"],
+            purple_small: ["small_1.png", "small_2.png", "small.png"],
 
-        blue_big: ["big.png"],
-        blue_mid: ["mid_1.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
-        blue_small: ["small_1.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
+            red_big: ["big.png"],
+            red_mid: ["mid.png", "mid_2.png", "mid_3.png"],
+            red_small: ["small.png", "small_2.png", "small_3.png"],
+
+            yellow_big: ["big.png"],
+            yellow_mid: ["mid_1.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+            yellow_small: ["small_1.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
+        }
     },
 
     ui: {

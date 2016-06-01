@@ -61,6 +61,7 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.burst = function(doubleScore) {
         GC.app.emit('score:add', doubleScore ? this.score * 2 : this.score);
+        GC.app.emit('particles:ball:destroy', this.type, this.style);
     };
 
     /**
@@ -120,6 +121,7 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.onCollison = function(targetHex) {
         this.placeTo(targetHex.center);
+        GC.app.emit('particles:ball:colided', this.type, this.style);
     };
 
     /**
@@ -128,9 +130,14 @@ exports = Class(ui.ImageView, function(supr) {
     this.update = function(dt) {
 
         // Release ball after drop down
-        if (this.dropped && this.style.y > GC.app.boardViewHeight) {
+        if (this.dropped && this.style.y + this.style.height > GC.app.boardViewHeight) {
+            GC.app.emit('particles:ball:drop_down_destroy', this.type, this.style);
             this.burst(true);
             return this.release();
+        }
+
+        if (this.dropped) {
+            GC.app.emit('particles:ball:dropdown', this.type, this.style, this.velocityVector);
         }
 
         if (!this.move) return;
@@ -141,6 +148,7 @@ exports = Class(ui.ImageView, function(supr) {
         if (center - this.style.width / 2 <= 0) {
             this.style.x = 0;
             this.velocityVector.x = -this.velocityVector.x;
+            GC.app.emit('particles:ball:reflect', this.type, this.style);
         }
 
         // reflect right
@@ -148,6 +156,7 @@ exports = Class(ui.ImageView, function(supr) {
             var penetrationDepth = (center + this.style.width / 2) - GC.app.boardViewWidth;
             this.style.x -= penetrationDepth / 2;
             this.velocityVector.x = -this.velocityVector.x;
+            GC.app.emit('particles:ball:reflect', this.type, this.style);
         }
 
         // Move by velocityVector
@@ -168,6 +177,7 @@ exports = Class(ui.ImageView, function(supr) {
         // Emit collison check
         if (!this.dropped) {
             GC.app.emit('collision:check', this, collisionData);
+            GC.app.emit('particles:ball:movement', this.type, this.style, this.velocityVector);
         }
 
         // Out of view check

@@ -93,10 +93,13 @@ exports = Class(ui.View, function(supr) {
         });
 
         // Up vector
-        this.upVector = new Vec2D({
+
+        this.up = new Vec2D({
             x: this.position.x,
             y: this.position.y - 100 // Just up vector magnitude
-        }).minus(new Vec2D(this.position));
+        });
+
+        this.upVector = new Vec2D(this.up).minus(new Vec2D(this.position));
 
         // Target point, will changes on user input
         this.target = new Point({
@@ -261,6 +264,8 @@ exports = Class(ui.View, function(supr) {
         this.barrel.startAnimation('shot', {
             frame: 3
         });
+
+        GC.app.emit('particles:cannon:shoot', startPoint, this.shootingDirection);
     };
 
     /**

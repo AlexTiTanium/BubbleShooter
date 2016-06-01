@@ -2,6 +2,7 @@ import ui.View as View;
 import src.views.InterfaceView as GameUI;
 import src.views.BoardView as BoardView;
 import src.lib.LevelManager as LevelManager;
+import src.lib.Particles as Particles;
 import src.Config as Config;
 
 exports = Class(View, function(supr) {
@@ -31,6 +32,7 @@ exports = Class(View, function(supr) {
         this.ui = new GameUI(Config.ui, this);
         this.board = new BoardView(Config.board, this);
         this.level = new LevelManager(Config.levels);
+        this.particles = new Particles(Config.particles, this.board);
     };
 
     /**
@@ -63,6 +65,7 @@ exports = Class(View, function(supr) {
         dt = Math.min(dt, Config.max_delta);
 
         this.board.update(dt);
+        this.particles.update(dt);
     };
 
 });
