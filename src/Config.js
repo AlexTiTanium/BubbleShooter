@@ -12,7 +12,7 @@ exports = {
         rows: 15,
 
         radius: 15,
-        angle: 30,
+        angle: 20,
         isEven: false, // start layout
         baseWidth: 576,
         keepPosition: 9 // Keep min and max height of grid on this row
@@ -30,7 +30,7 @@ exports = {
             autoStart: true,
             width: 70, //130,
             height: 118, //220,
-            frameRate: 10,
+            frameRate: 30,
             defaultAnimation: "idle",
             url: "resources/images/cannon/barrel",
         },
@@ -76,6 +76,37 @@ exports = {
     levels: [
 		'resources/levels/1.json'
 	],
+
+    particles: {
+
+        blue_big: ["big.png"],
+        blue_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+        blue_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png", "small_6.png"],
+
+        gold_big: ["big.png"],
+        gold_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+        gold_small: ["small.png", "small_2.png", "small_3.png", "small_4.png"],
+
+        green_big: ["big.png"],
+        greene_mid: ["mid.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+        green_small: ["small.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
+
+        purple_big: ["big.png"],
+        purplee_mid: ["mid.png", "mid_2.png"],
+        purple_small: ["small.png", "small_2.png", "small_3.png"],
+
+        red_big: ["big.png"],
+        red_mid: ["mid.png", "mid_2.png", "mid_3.png"],
+        red_small: ["small.png", "small_2.png", "small_3.png"],
+
+        red_big: ["big.png"],
+        red_mid: ["mid.png", "mid_2.png", "mid_3.png"],
+        red_small: ["small.png", "small_2.png", "small_3.png"],
+
+        blue_big: ["big.png"],
+        blue_mid: ["mid_1.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
+        blue_small: ["small_1.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
+    }
 
     ui: {
         // Background image

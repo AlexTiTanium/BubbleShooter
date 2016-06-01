@@ -32,6 +32,7 @@ exports = Class(ui.View, function(supr) {
         this.shootDelayDelta = config.shootDelay;
         this.aimingStart = false;
         this.counter = 50; // balls counter
+        this.targetAngle = 0;
 
         this.build(config);
 
@@ -71,7 +72,7 @@ exports = Class(ui.View, function(supr) {
             superview: this.ballsCounterView,
             layout: 'box',
             color: 'black',
-            y: -3,
+            y: -6,
             text: this.counter,
             size: 25,
             wrap: true
@@ -221,6 +222,9 @@ exports = Class(ui.View, function(supr) {
         }
 
         this.aimingStart = true;
+        this.barrel.startAnimation('aiming', {
+            loop: true
+        });
         this.updateTarget(point);
     };
 
@@ -254,6 +258,9 @@ exports = Class(ui.View, function(supr) {
         this.charge();
 
         this.decrementBallsCounter();
+        this.barrel.startAnimation('shot', {
+            frame: 3
+        });
     };
 
     /**

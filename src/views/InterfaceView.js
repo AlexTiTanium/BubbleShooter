@@ -140,7 +140,7 @@ exports = Class(View, function(supr) {
             superview: this.scoreBg,
             layout: 'box',
             color: 'black',
-            //fontFamily: 'angeline',
+            y: -3,
             text: "0",
             size: 35
         });
