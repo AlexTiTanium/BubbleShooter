@@ -74,7 +74,7 @@ exports = Class(ui.View, function(supr) {
             y: -3,
             fontFamily: 'angeline',
             text: this.counter,
-            size: 50,
+            size: 30,
             wrap: true
         });
 

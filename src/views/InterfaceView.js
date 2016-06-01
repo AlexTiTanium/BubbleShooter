@@ -142,8 +142,7 @@ exports = Class(View, function(supr) {
             color: 'black',
             fontFamily: 'angeline',
             text: "0",
-            size: 50,
-            wrap: true
+            size: 50
         });
     };
 
