@@ -1,7 +1,7 @@
 import ui.View as View;
 import src.views.BackgroundView as BackgroundView;
 import src.views.BoardView as BoardView;
-import src.entities.LevelManager as LevelManager;
+import src.lib.LevelManager as LevelManager;
 import src.Config as Config;
 
 exports = Class(View, function(supr) {
