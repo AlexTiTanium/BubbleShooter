@@ -40,10 +40,6 @@ exports = Class(ui.View, function(supr) {
 
     this.drawHex = function(ctx, he) {
 
-        // if (hex.ball) {
-        //     return;
-        // }
-
         var hex = this.hexGrid.pixelToHex(he.center);
         if (!hex) return;
         //console.log(hex);
@@ -71,11 +67,15 @@ exports = Class(ui.View, function(supr) {
         }
 
         if (hex.checkColor) {
-            ctx.fillStyle = 'red';
+            //ctx.fillStyle = 'red';
         }
 
         if (hex.checkDetach) {
-            ctx.fillStyle = 'grey';
+            //ctx.fillStyle = 'grey';
+        }
+
+        if (hex.ball) {
+            ctx.fillStyle = 'blue';
         }
 
         ctx.fill();
