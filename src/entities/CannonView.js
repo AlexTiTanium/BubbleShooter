@@ -72,9 +72,8 @@ exports = Class(ui.View, function(supr) {
             layout: 'box',
             color: 'black',
             y: -3,
-            fontFamily: 'angeline',
             text: this.counter,
-            size: 30,
+            size: 25,
             wrap: true
         });
 
