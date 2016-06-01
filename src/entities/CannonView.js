@@ -172,49 +172,8 @@ exports = Class(ui.View, function(supr) {
 
         this.shootingDirection = targetVector;
         this.barrel.style.r = angle;
+
         if (this.currentBall) this.currentBall.style.r = angle;
-    };
-
-    /**
-     * Debug draw
-     */
-    this.render = function(ctx) {
-
-        ctx.save();
-
-        ctx.beginPath();
-
-        var upVector = this.upVector.add(new Vec2D(this.position));
-
-        ctx.arc(GC.app.boardViewWidth, 200, 10, 0, 2 * Math.PI, false);
-        ctx.fillStyle = 'orange';
-        ctx.fill();
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = '#003300';
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.fillStyle = 'blue';
-        ctx.fill();
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(upVector.x, upVector.y);
-        ctx.stroke();
-
-        var targetVector = new Vec2D(this.target).minus(new Vec2D(this.position));
-        targetVector = targetVector.getUnitVector();
-        targetVector.x *= 80;
-        targetVector.y *= 80;
-
-        targetVector = new Vec2D(targetVector).add(new Vec2D(this.position));
-
-        ctx.beginPath();
-        ctx.fillStyle = 'orange';
-        ctx.fill();
-        ctx.moveTo(this.position.x, this.position.y);
-        ctx.lineTo(targetVector.x, targetVector.y);
-        ctx.stroke();
-
-        ctx.restore();
     };
 
 });

@@ -10,22 +10,25 @@ exports = Class(function(supr) {
         this.columns = opts.columns;
         this.rows = opts.rows;
         this.radius = opts.radius;
+        this.angle = opts.angle;
+        this.isEven = opts.isEven; // layout type
+        this.width = Math.sqrt(3) / 2 * (this.radius * 2);
 
         this.hexes = [];
-        this.ceils = this.createGrid(this.columns, this.rows, this.radius);
+        this.ceils = this.buildGrid(this.columns, this.rows);
     };
 
     /**
      * Generate hexagon grid
      */
-    this.createGrid = function(columns, rows, radius) {
+    this.buildGrid = function(columns, rows) {
 
         var grid = [];
 
         for (var y = 0; y < rows; y++) {
             for (var x = 0; x < columns; x++) {
 
-                var hex = new HexCeil(x, y, radius, this);
+                var hex = new HexCeil(x, y, this.radius, this.angle, this.isEven);
 
                 grid[x] = grid[x] || [];
                 grid[x][y] = hex;
@@ -37,6 +40,137 @@ exports = Class(function(supr) {
         return grid;
     };
 
+    /**
+     * Add one row
+     */
+    this.addRow = function(balls) {
+
+        //We need keep balls in same position when move it up  and down
+        this.toggleSwitchLayout();
+
+        this.unshift(balls);
+        this.pop();
+    };
+
+    /**
+     * Remove one row
+     */
+    this.removeRow = function() {
+
+        // We need keep balls in same position when move it up  and down
+        this.toggleSwitchLayout();
+
+        this.shift();
+        this.push();
+    };
+
+    /**
+     * Add one row to the first row of the array
+     */
+    this.unshift = function(balls) {
+
+        var row = [];
+
+        for (var i = 0; i < this.hexes.length; i++) {
+            this.hexes[i].row += 1;
+        }
+
+        for (var x = 0; x < this.ceils.length; x++) {
+
+            var hex = new HexCeil(x, 0, this.radius, this.angle, this.isEven);
+
+            this.ceils[x].unshift(hex);
+            this.hexes.push(hex);
+
+            if (balls[x]) {
+                hex.ball = balls[x];
+                hex.ball.placeTo(hex.center);
+            }
+        }
+    };
+
+    /**
+     * Remove firs row of grid
+     */
+    this.shift = function(balls) {
+
+        var row = [];
+
+        for (var x = 0; x < this.ceils.length; x++) {
+
+            var hex = this.ceils[x].shift();
+
+            if (hex.ball) {
+                hex.ball.release();
+            }
+
+            this.hexes.splice(this.hexes.indexOf(hex), 1);
+        }
+
+        for (var i = 0; i < this.hexes.length; i++) {
+            this.hexes[i].row -= 1;
+        }
+
+    };
+
+    /**
+     * Remove last row
+     */
+    this.pop = function() {
+
+        for (var i = 0; i < this.ceils.length; i++) {
+
+            var hex = this.ceils[i].splice(this.ceils[i].length - 1, 1);
+
+            if (hex[0].ball) {
+                hex[0].ball.release();
+            }
+
+            this.hexes.splice(this.hexes.indexOf(hex[0]), 1);
+        }
+    };
+
+    /**
+     * Add one empty row to the and of array
+     */
+    this.push = function() {
+
+        for (var i = 0; i < this.ceils.length; i++) {
+
+            var hex = new HexCeil(i, this.ceils[i].length, this.radius, this.angle, this.isEven);
+
+            this.ceils[i].push(hex);
+            this.hexes.push(hex);
+        }
+    };
+
+    /**
+     * Toggle switch layout from odd, event
+     */
+    this.toggleSwitchLayout = function() {
+        this.isEven = !this.isEven;
+    };
+
+    /**
+     * Rebuild hex grid
+     */
+    this.rebuild = function() {
+
+        for (var i = 0; i < this.hexes.length; i++) {
+
+            var hex = this.hexes[i];
+
+            hex.rebuild(this.isEven);
+
+            if (hex.ball) {
+                hex.ball.animateTo(hex.center);
+            }
+        }
+    };
+
+    /**
+     * Find one hex at specified position
+     */
     this.find = function(q, r) {
 
         if (this.ceils[q] && this.ceils[q][r]) {
@@ -46,106 +180,23 @@ exports = Class(function(supr) {
         return null;
     };
 
-    this.getAnyWithBallFromFirstRow = function() {
-
-        for (var i = 0; i < this.ceils[0].length; i++) {
-            if (this.ceils[0][i].ball) return this.ceils[0][i];
-        }
-
-        return null;
-    };
-
-    this.colorCheck = function(hex) {
-
-        var found = this.waveColorCheck(hex);
-        var drop = [];
-
-        if (found.length < 3) return;
-
-        for (var i = 0; i < found.length; i++) {
-            found[i].ball.release();
-            found[i].ball = null;
-        }
-
-        var initial = this.getAnyWithBallFromFirstRow();
-
-        if (!initial) {
-            drop = this.hexes;
-        } else {
-            var connected = this.waveDetachedBallsCheck(initial);
-            for (var i = 0; i < this.hexes.length; i++) {
-                if (this.hexes[i].ball && connected.indexOf(this.hexes[i]) == -1) drop.push(this.hexes[i]);
-            }
-        }
-
-        for (var i = 0; i < drop.length; i++) {
-            if (!drop[i].ball) return;
-            drop[i].ball.drop();
-            drop[i].ball = null;
-        }
-    };
-
-    this.waveColorCheck = function(hex, found, checked) {
-
-        found = found || [hex];
-        checked = checked || [hex];
-
-        var color = hex.ball.type;
-
-        var neighbors = this.getNeighborsWithBalls(hex);
-
-        for (var i = 0; i < neighbors.length; i++) {
-            var neighbor = neighbors[i];
-
-            if (checked.indexOf(neighbor) != -1) continue;
-
-            checked.push(neighbor);
-
-            neighbor.checkColor = true;
-
-            if (neighbor.ball.type == color) {
-                found.push(neighbor);
-                this.waveColorCheck(neighbor, found, checked);
-            }
-        }
-
-        return found;
-    };
-
-    this.waveDetachedBallsCheck = function(hex, checked) {
-
-        checked = checked || [hex];
-
-        var neighbors = this.getNeighborsWithBalls(hex);
-
-        for (var i = 0; i < neighbors.length; i++) {
-            var neighbor = neighbors[i];
-
-            if (checked.indexOf(neighbor) != -1) continue;
-            checked.push(neighbor);
-
-            neighbor.checkDetach = true;
-
-            this.waveDetachedBallsCheck(neighbor, checked);
-        }
-
-        return checked;
-    };
-
     /**
-     *
+     * Return all ball from firs row
      */
-    this.getHexByPoint = function(point) {
+    this.getAllWithBallFromFirstRow = function() {
 
-        var hex = this.pixelToHex(point);
-        if (!hex) return;
-        hex.underBall = true; // For debug
-        return hex;
+        var hexesWithBalls = [];
+
+        for (var i = 0; i < this.ceils.length; i++) {
+            if (this.ceils[i][0].ball) hexesWithBalls.push(this.ceils[i][0]);
+        }
+
+        return hexesWithBalls;
     };
 
     /**
      * Check hex neighbors and return neighbors with balls
-     * Probably not the best name of the function ))
+     * Probably not the best name of the function :-)
      */
     this.getNeighborsWithBalls = function(hex) {
 
@@ -166,13 +217,15 @@ exports = Class(function(supr) {
     };
 
     /**
-     *
+     * Get 2 front neighbors
      */
     this.getFrontNeighbors = function(hex) {
 
         var neighbors = null;
 
-        if (hex.isOdd) {
+        var order = this.isEven ? (hex.row + 1) % 2 : hex.row % 2;
+
+        if (order) {
             neighbors = [
 				this.find(hex.col + 1, hex.row - 1),
 				this.find(hex.col, hex.row - 1),
@@ -190,13 +243,15 @@ exports = Class(function(supr) {
     };
 
     /**
-     *
+     * Find neighbors around given hex
      */
     this.findNeighbors = function(hex) {
 
         var neighbors = null;
 
-        if (hex.isOdd) {
+        var order = this.isEven ? (hex.row + 1) % 2 : hex.row % 2;
+
+        if (order) {
             neighbors = [
 				this.find(hex.col + 1, hex.row - 1),
 				this.find(hex.col, hex.row - 1),
@@ -222,33 +277,48 @@ exports = Class(function(supr) {
     };
 
     /**
-     *
+     * Convert world point coordinates to offset coordinates ande return hex
      */
     this.pixelToHex = function(pixel) {
-        var offset = this.cubeToOffset(this.cubeRound(this.pixelToCube(pixel)));
 
-        offset.q -= 1;
-        offset.r -= 1;
+        var x;
 
-        if (this.ceils[offset.q] && this.ceils[offset.q][offset.r]) {
-            return this.ceils[offset.q][offset.r];
+        // Cube and axial coordinates system is center based, so we need substruct our position shift
+        if (this.isEven) {
+            x = pixel.x - this.width;
+        } else {
+            x = pixel.x - this.width / 2;
         }
 
-        return null;
+        var offset = this.cubeToOffset(this.cubeRound(this.pixelToCube({
+            x: x,
+            y: pixel.y - this.radius,
+        })));
+
+        return this.find(offset.q, offset.r);
     };
 
     /**
-     *
+     * Convert hex offset coordinates to worlds screen coordinates
      */
     this.hexToPixel = function(hex) {
+
+        var x;
+
+        if (this.isEven) {
+            x = this.radius * Math.sqrt(3) * (hex.col - 0.5 * (Math.abs(hex.row) % 2)) + hex.width;
+        } else {
+            x = this.radius * Math.sqrt(3) * (hex.col + 0.5 * (Math.abs(hex.row) % 2)) + hex.width / 2;
+        }
+
         return {
-            x: this.radius * Math.sqrt(3) * (hex.col + 0.5 * (Math.abs(hex.row) % 2)),
+            x: x,
             y: this.radius * 3 / 2 * hex.row
         };
     };
 
     /**
-     *
+     * Convert worlds screen coordinates to cube hex coordinates
      */
     this.pixelToCube = function(pixel) {
 
@@ -266,7 +336,7 @@ exports = Class(function(supr) {
     };
 
     /**
-     *
+     * Convert cube hex coordinates to offset hex coordinates
      */
     this.cubeToOffset = function(cube) {
 
@@ -274,7 +344,12 @@ exports = Class(function(supr) {
         var y = cube.y;
         var z = cube.z;
 
-        col = x + (z + (Math.abs(z) % 2)) / 2;
+        if (this.isEven) {
+            col = x + (z + (Math.abs(z) % 2)) / 2;
+        } else {
+            col = x + (z - (Math.abs(z) % 2)) / 2;
+        }
+
         row = z;
 
         return {
@@ -284,7 +359,7 @@ exports = Class(function(supr) {
     };
 
     /**
-     *
+     * Round for cube hex coordinates
      */
     this.cubeRound = function(cube) {
 

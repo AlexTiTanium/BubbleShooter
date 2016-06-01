@@ -21,7 +21,6 @@ exports = Class(ui.ViewPool, function(supr) {
 
         this.types = config.types;
         this.balls = [];
-        this.grid = superview.grid;
 
         supr(this, 'init', [opts]);
     };
@@ -38,9 +37,13 @@ exports = Class(ui.ViewPool, function(supr) {
             type = Random.choose(this.types);
         }
 
+        if (type === null) {
+            return null;
+        }
+
         var ballConfig = Config.balls[type];
 
-        ball.setup(type, ballConfig, this.grid, hex);
+        ball.setup(type, ballConfig, hex);
         this.balls.push(ball);
 
         return ball;

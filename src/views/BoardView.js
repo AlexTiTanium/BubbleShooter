@@ -1,6 +1,8 @@
 import ui.View;
 import ui.ImageView as ImageView;
 import src.lib.HexGrid as HexGrid;
+import src.lib.GameLogic as GameLogic;
+import src.utils.HexGridDebugView as HexGridDebugView;
 import src.entities.BallPool as BallPool;
 import src.entities.CannonView as CannonView;
 import src.views.GridView as GridView;
@@ -27,15 +29,33 @@ exports = Class(ui.View, function(supr) {
     };
 
     /**
-     *
+     * Bild main game area
      */
     this.build = function(config) {
 
-        this.grid = new HexGrid(config);
-        this.balls = new BallPool(Config.ballPool, this);
+        // Here will leave balls
         this.gridView = new GridView(this);
 
+        this.grid = new HexGrid(config);
+
+        this.balls = new BallPool(Config.ballPool, this.gridView);
         this.cannon = new CannonView(Config.cannon, this);
+
+        // This will controll global logic aspects of the game
+        this.game = new GameLogic(this.grid, this.balls, this.cannon);
+
+        // Comment this for release
+        //this.enableDebugDraw();
+    };
+
+    /**
+     * Draws debug hexagon grid
+     */
+    this.enableDebugDraw = function() {
+        new HexGridDebugView(this.grid, {
+            superview: this.gridView,
+            zindex: 10
+        });
     };
 
     /**

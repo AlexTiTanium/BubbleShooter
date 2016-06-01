@@ -25,20 +25,28 @@ exports = Class(ui.View, function(supr) {
 
         ctx.save();
 
+        //this.drawHex(ctx, this.hexGrid.ceils[0][0]);
+        //this.drawHex2(ctx, this.hexGrid.ceils[0][0]);
+
         for (var i = 0; i < this.hexGrid.hexes.length; i++) {
+            //if (this.hexGrid.hexes[i].col != 9) continue;
             this.drawHex(ctx, this.hexGrid.hexes[i]);
+
         }
 
         ctx.restore();
     };
 
-    this.drawHex = function(ctx, hex) {
+
+    this.drawHex = function(ctx, he) {
 
         // if (hex.ball) {
         //     return;
         // }
 
-        //var hex = he.grid.pixelToHex(he.center);
+        var hex = this.hexGrid.pixelToHex(he.center);
+        if (!hex) return;
+        //console.log(hex);
 
         ctx.strokeStyle = "#000";
         ctx.lineWidth = 1;
@@ -78,15 +86,15 @@ exports = Class(ui.View, function(supr) {
         ctx.fillStyle = "#000";
 
         //console.log(hexx);
-        ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
+        //ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
         // ctx.fillText("(" + Math.round(d.q) + "," + Math.round(d.r) + ")", hex.center.x - 12, hex.center.y + 3);
 
-        // var c = hex.grid.hexToPixel(hex);
-        // ctx.fillText("(" + c.x + ")", hex.center.x - 12, hex.center.y + 3);
+        //var c = this.hexGrid.hexToPixel(hex);
+        //ctx.fillText("(" + c.x + "," + c.y + ")", hex.center.x - 12, hex.center.y + 3);
 
-        // var d = hex.grid.pixelToHex(hex.center);
-        // ctx.fillText("(" + d.q + "," + d.r + ")", hex.center.x - 12, hex.center.y + 3);
+        //var d = this.hexGrid.pixelToHex(hex.center);
+        //ctx.fillText("(" + d.col + "," + d.row + ")", hex.center.x - 12, hex.center.y + 3);
 
-        //ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
+        ctx.fillText("(" + hex.col + "," + hex.row + ")", hex.center.x - 12, hex.center.y + 3);
     };
 });

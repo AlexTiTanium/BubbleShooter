@@ -1,6 +1,6 @@
 import ui.ImageView;
+import animate;
 import math.geom.Vec2D as Vec2D;
-import src.utils.Utils as Utils;
 
 exports = Class(ui.ImageView, function(supr) {
 
@@ -19,14 +19,13 @@ exports = Class(ui.ImageView, function(supr) {
     };
 
     /**
-     * Set ball skin, plase to right position and conect to hex grid
+     * Set ball skin, plase to correct position and conect to hex grid
      */
-    this.setup = function(type, config, grid, hex) {
+    this.setup = function(type, config, hex) {
 
         this.type = type;
         this.score = config.score;
         this.remove = false;
-        this.grid = grid;
 
         this.updateOpts({
             image: config.image
@@ -47,6 +46,7 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.release = function() {
         this.remove = true;
+        this.velocityVector = null;
         this.move = false;
         this.dropped = false;
         this.style.visible = false;
@@ -65,18 +65,32 @@ exports = Class(ui.ImageView, function(supr) {
     };
 
     /**
+     * Place ball to specific coordinates with animation
+     */
+    this.animateTo = function(point) {
+
+        this.move = false;
+
+        animate(this).now({
+            x: point.x - this.style.width / 2,
+            y: point.y - this.style.height / 2
+        }, 400, animate.easeInQuad);
+    };
+
+    /**
      * Move ball from specific point to specific direction
      */
     this.moveTo = function(direction, fromPoint) {
 
         this.velocityVector = direction.getUnitVector();
+
         this.placeTo(fromPoint);
 
         this.move = true;
     };
 
     /**
-     *
+     * Drop down ball
      */
     this.drop = function() {
 
@@ -90,52 +104,10 @@ exports = Class(ui.ImageView, function(supr) {
     };
 
     /**
-     * Check grid
+     * On colllsion event, ball colided with others balls, correct ball position detected
      */
-    this.checkCollisions = function() {
-
-        // Center of current ball
-        var center = {
-            x: this.style.x + this.style.width / 2,
-            y: this.style.y + this.style.height / 2
-        };
-
-        var radius = this.style.width / 2;
-
-        var targetHex = this.grid.getHexByPoint(center);
-        if (!targetHex) return;
-
-        if (!targetHex.ball) {
-            this.previousHex = targetHex;
-        }
-
-        // If both front hexes is empty allow pass throw
-        var frontHex = this.grid.getFrontNeighbors(targetHex);
-        if (frontHex[0] && frontHex[1] && !frontHex[0].ball && !frontHex[1].ball) {
-            return;
-        }
-
-        var checkCollisions = this.grid.getNeighborsWithBalls(targetHex);
-
-        if (targetHex.ball) {
-            checkCollisions.push(targetHex);
-        }
-
-        if (!this.previousHex) return;
-
-        for (var i = 0; i < checkCollisions.length; i++) {
-            var hex = checkCollisions[i];
-
-            if (!hex.ball) continue;
-
-            if (Utils.circleCircleCollision(hex.center, center, this.style.width / 2)) {
-                this.previousHex.ball = this;
-                this.placeTo(this.previousHex.center);
-                this.grid.colorCheck(this.previousHex);
-                this.previousHex = null; // avoid memory leeak
-                break;
-            }
-        }
+    this.onCollison = function(targetHex) {
+        this.placeTo(targetHex.center);
     };
 
     /**
@@ -143,6 +115,7 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.update = function(dt) {
 
+        // Release ball after drop down
         if (this.dropped && this.style.y > GC.app.boardViewHeight) {
             return this.release();
         }
@@ -151,24 +124,31 @@ exports = Class(ui.ImageView, function(supr) {
 
         var center = this.style.x + this.style.width / 2;
 
-        // reflect
-        if (center - this.style.width / 2 < 0) {
-            this.velocityVector.x = -this.velocityVector.x + 0.4;
+        // reflect left
+        if (center - this.style.width / 2 <= 0) {
+            this.style.x = 0;
+            this.velocityVector.x = -this.velocityVector.x;
         }
 
-        if (center + this.style.width / 2 > GC.app.boardViewWidth) {
-            this.velocityVector.x = -this.velocityVector.x - 0.4;
+        // reflect right
+        if (center + this.style.width / 2 >= GC.app.boardViewWidth) {
+            var penetrationDepth = (center + this.style.width / 2) - GC.app.boardViewWidth;
+            this.style.x -= penetrationDepth / 2;
+            this.velocityVector.x = -this.velocityVector.x;
         }
 
+        // Move by velocityVector
         this.style.x += dt * this.speed * this.velocityVector.x;
         this.style.y += dt * this.speed * this.velocityVector.y;
 
+        // Out of view check
         if (this.style.y < 0) {
             return this.release();
         }
 
+        // Emit collison check
         if (!this.dropped) {
-            this.checkCollisions();
+            GC.app.emit('collision:check', this);
         }
     };
 

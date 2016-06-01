@@ -42,7 +42,7 @@ exports = Class(View, function(supr) {
 
         var level = this.level.getCurrent();
 
-        this.board.gridView.fillGrid(level.grid);
+        this.board.game.fillGrid(level.grid);
     };
 
     /**

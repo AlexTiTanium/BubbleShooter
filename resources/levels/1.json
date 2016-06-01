@@ -1,12 +1,15 @@
 {
 	"balls": 20,
 	"grid":[
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]],
-		[["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"],["any"]]
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","red","any","red","any","any","any","any"],
+		["any","any","any","red","red","red","any","any","any","any"],
+		["any","any","any","red","red","red","any","any","any","any"],
+		["any","any","any","any","red","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"]
 	]
 }

@@ -9,9 +9,13 @@ exports = {
 
     board: {
         columns: 10,
-        rows: 16,
+        rows: 15,
+
         radius: 15,
-        baseWidth: 576
+        angle: 30,
+        isEven: false, // start layout
+        baseWidth: 576,
+        keepPosition: 9 // Keep min and max height of grid on this row
     },
 
     cannon: {
@@ -34,7 +38,7 @@ exports = {
     },
 
     ballPool: {
-        initCount: 120,
+        initCount: 200,
         initOpts: {
             width: 25,
             height: 25
