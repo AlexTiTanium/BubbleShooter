@@ -18,8 +18,12 @@ exports = {
         keepPosition: 9 // Keep min and max height of grid on this row
     },
 
-    cannon: {
+    ball: {
+        ballSpeed: 0.6,
+        dropSpeed: 0.2,
+    },
 
+    cannon: {
         ballWindowYoffset: 27,
         shootDelay: 380,
         barrel: {

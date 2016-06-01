@@ -1,6 +1,7 @@
 import ui.ImageView;
 import animate;
 import math.geom.Vec2D as Vec2D;
+import src.Config as Config;
 
 exports = Class(ui.ImageView, function(supr) {
 
@@ -11,7 +12,7 @@ exports = Class(ui.ImageView, function(supr) {
 
         opts = merge(opts, {});
 
-        this.speed = 0.5;
+        this.speed = Config.ball.ballSpeed;
         this.move = false;
         this.remove = false; // If true view can be released
 
@@ -50,6 +51,7 @@ exports = Class(ui.ImageView, function(supr) {
         this.move = false;
         this.dropped = false;
         this.style.visible = false;
+        this.speed = Config.ball.ballSpeed;
     };
 
     /**
@@ -101,6 +103,7 @@ exports = Class(ui.ImageView, function(supr) {
 
         this.move = true;
         this.dropped = true;
+        this.speed = Config.ball.dropSpeed; // drop speed
     };
 
     /**
