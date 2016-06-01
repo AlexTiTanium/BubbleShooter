@@ -11,7 +11,7 @@ exports = Class(ui.ImageView, function(supr) {
 
         opts = merge(opts, {});
 
-        this.speed = 0.3;
+        this.speed = 0.5;
         this.move = false;
         this.remove = false; // If true view can be released
 
@@ -74,7 +74,7 @@ exports = Class(ui.ImageView, function(supr) {
         animate(this).now({
             x: point.x - this.style.width / 2,
             y: point.y - this.style.height / 2
-        }, 400, animate.easeInQuad);
+        }, 400, animate.easeInOutQuad);
     };
 
     /**
