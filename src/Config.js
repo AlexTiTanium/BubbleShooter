@@ -19,7 +19,7 @@ exports = {
     },
 
     ball: {
-        ballSpeed: 0.6,
+        ballSpeed: 1.6,
         dropSpeed: 0.2,
     },
 
