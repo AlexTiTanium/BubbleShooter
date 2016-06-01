@@ -106,7 +106,7 @@ exports = {
         blue_big: ["big.png"],
         blue_mid: ["mid_1.png", "mid_2.png", "mid_3.png", "mid_4.png", "mid_5.png"],
         blue_small: ["small_1.png", "small_2.png", "small_3.png", "small_4.png", "small_5.png"],
-    }
+    },
 
     ui: {
         // Background image
