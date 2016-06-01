@@ -45,7 +45,7 @@ exports = Class(ui.View, function(supr) {
         this.game = new GameLogic(this.grid, this.balls, this.cannon);
 
         // Comment this for release
-        this.enableDebugDraw();
+        //this.enableDebugDraw();
     };
 
     /**

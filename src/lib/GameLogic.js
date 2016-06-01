@@ -12,6 +12,7 @@ exports = Class(function(supr) {
         this.balls = ballsPool;
         this.ceils = grid.ceils;
         this.hexes = grid.hexes;
+        this.collison = 16;
 
         this.gridCursor = 0;
         this.levelGrid = [];
@@ -22,58 +23,65 @@ exports = Class(function(supr) {
     /**
      * Init collison check for ball over balls in the grid
      */
-    this.beginBallsCollisionCheck = function(ball) {
+    this.beginBallsCollisionCheck = function(ball, collision) {
+        for (var i = 1; i <= this.collison; i++) {
 
-        // Center of current ball
-        var center = {
-            x: ball.style.x + ball.style.width / 2,
-            y: ball.style.y + ball.style.height / 2
-        };
+            var position = {
+                x: collision.position.x + (collision.targetPosition.x - collision.position.x) / this.collison * i,
+                y: collision.position.y + (collision.targetPosition.y - collision.position.y) / this.collison * i
+            };
 
-        // Radius of checked ball
-        var radius = ball.style.width / 2;
+            // Center of current ball
+            var center = {
+                x: position.x + ball.style.width / 2,
+                y: position.y + ball.style.height / 2
+            };
 
-        // Get hex below ball
-        var targetHex = this.grid.pixelToHex(center);
+            // Radius of checked ball
+            var radius = ball.style.width / 2;
 
-        if (!targetHex) return;
-        targetHex.underBall = true;
+            // Get hex below ball
+            var targetHex = this.grid.pixelToHex(center);
 
-        if (!targetHex.ball) {
-            ball.previousHex = targetHex;
-        }
+            if (!targetHex) continue;
+            targetHex.underBall = true;
 
-        // If both front hexes is empty allow pass throw
-        var frontHex = this.grid.getFrontNeighbors(targetHex);
-        if (frontHex[0] && frontHex[1] && !frontHex[0].ball && !frontHex[1].ball) {
-            return;
-        }
-
-        // Get hex neighbors for colsion check
-        var checkCollisions = this.grid.getNeighborsWithBalls(targetHex);
-
-        // Add to collsions check traget hex if it has a ball
-        if (targetHex.ball) {
-            checkCollisions.push(targetHex);
-        }
-
-        if (!ball.previousHex) return;
-
-        for (var i = 0; i < checkCollisions.length; i++) {
-            var hex = checkCollisions[i];
-
-            if (!hex.ball) continue;
-
-            // Check collision with neighbors
-            if (Utils.circleCircleCollision(hex.center, center, radius)) {
-                this.placeBallToHex(ball, ball.previousHex);
-                break;
+            if (!targetHex.ball) {
+                ball.previousHex = targetHex;
             }
-        }
 
-        // If ball at the zero row position and hax are empty
-        if (targetHex.row == 0 && !targetHex.ball) {
-            this.placeBallToHex(ball, targetHex);
+            // If both front hexes is empty allow pass throw
+            var frontHex = this.grid.getFrontNeighbors(targetHex);
+            if (frontHex[0] && frontHex[1] && !frontHex[0].ball && !frontHex[1].ball) {
+                continue;
+            }
+
+            // Get hex neighbors for colsion check
+            var checkCollisions = this.grid.getNeighborsWithBalls(targetHex);
+
+            // Add to collsions check traget hex if it has a ball
+            if (targetHex.ball) {
+                checkCollisions.push(targetHex);
+            }
+
+            if (!ball.previousHex) continue;
+            for (var j = 0; j < checkCollisions.length; j++) {
+                var hex = checkCollisions[j];
+
+                if (!hex.ball) continue;
+
+                // Check collision with neighbors
+                if (Utils.circleCircleCollision(hex.center, center, radius)) {
+                    this.placeBallToHex(ball, ball.previousHex);
+                    return;
+                }
+            }
+
+
+            // If ball at the zero row position and hax are empty
+            if (targetHex.row == 0 && !targetHex.ball) {
+                this.placeBallToHex(ball, targetHex);
+            }
         }
     };
 
@@ -81,6 +89,9 @@ exports = Class(function(supr) {
      * We call this func whan found a good position for hex and want place ball to this hex
      */
     this.placeBallToHex = function(ball, hex) {
+
+        var haveNeighbors = this.grid.getNeighborsWithBalls(hex);
+        if (hex.row != 0 && haveNeighbors.length == 0) return;
 
         hex.ball = ball;
 

@@ -16,6 +16,8 @@ exports = Class(ui.ImageView, function(supr) {
         this.move = false;
         this.remove = false; // If true view can be released
 
+        this.collisionIteration = 8;
+
         supr(this, 'init', [opts]);
     };
 
@@ -47,7 +49,7 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.release = function() {
         this.remove = true;
-        this.velocityVector = null;
+        //this.velocityVector = null;
         this.move = false;
         this.dropped = false;
         this.style.visible = false;
@@ -141,17 +143,28 @@ exports = Class(ui.ImageView, function(supr) {
         }
 
         // Move by velocityVector
+        var collisionData = {
+            position: {
+                x: this.style.x,
+                y: this.style.y
+            },
+            targetPosition: {
+                x: this.style.x + dt * this.speed * this.velocityVector.x,
+                y: this.style.y + dt * this.speed * this.velocityVector.y
+            }
+        }
+
         this.style.x += dt * this.speed * this.velocityVector.x;
         this.style.y += dt * this.speed * this.velocityVector.y;
+
+        // Emit collison check
+        if (!this.dropped) {
+            GC.app.emit('collision:check', this, collisionData);
+        }
 
         // Out of view check
         if (this.style.y < 0) {
             return this.release();
-        }
-
-        // Emit collison check
-        if (!this.dropped) {
-            GC.app.emit('collision:check', this);
         }
     };
 
