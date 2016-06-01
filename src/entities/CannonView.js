@@ -1,8 +1,12 @@
 import ui.View;
+import animate;
 import math.util as util;
 import math.geom.Vec2D as Vec2D;
 import math.geom.Point as Point;
-
+import math.geom.Rect as Rect;
+import ui.TextView as TextView;
+import math.geom.intersect as intersect;
+import ui.GestureView as GestureView;
 import ui.SpriteView as SpriteView;
 import ui.ImageView as ImageView;
 
@@ -26,6 +30,8 @@ exports = Class(ui.View, function(supr) {
         this.balls = superview.balls;
         this.shootDelay = config.shootDelay;
         this.shootDelayDelta = config.shootDelay;
+        this.aimingStart = false;
+        this.counter = 50; // balls counter
 
         this.build(config);
 
@@ -45,8 +51,32 @@ exports = Class(ui.View, function(supr) {
         this.base = new ImageView(merge(cannon.base, {
             superview: this,
             x: this.style.width / 2 - cannon.base.width / 2,
-            y: this.style.height - cannon.base.height - bottomOffset
+            y: this.style.height - cannon.base.height - bottomOffset,
+
         }));
+
+        this.ballsCounterView = new ImageView(merge(Config.ui.balls_counter, {
+            superview: this,
+            x: this.style.width - Config.ui.next_ball.width - 8,
+            y: this.style.height - Config.ui.next_ball.height - 52
+        }));
+
+        this.nextBallView = new ImageView(merge(Config.ui.next_ball, {
+            superview: this,
+            x: this.style.width - Config.ui.next_ball.width - 10,
+            y: this.style.height - Config.ui.next_ball.height - 25
+        }));
+
+        this.ballsCounter = new TextView({
+            superview: this.ballsCounterView,
+            layout: 'box',
+            color: 'black',
+            y: -3,
+            fontFamily: 'angeline',
+            text: this.counter,
+            size: 50,
+            wrap: true
+        });
 
         this.barrel = new SpriteView(merge(cannon.barrel, {
             superview: this,
@@ -82,8 +112,8 @@ exports = Class(ui.View, function(supr) {
         };
 
         this.nextBallWindow = {
-            x: this.position.x + 100,
-            y: this.position.y
+            x: this.nextBallView.style.x + this.nextBallView.style.width / 2,
+            y: this.nextBallView.style.y + this.nextBallView.style.width / 2
         };
 
         // Current and next ball property
@@ -91,6 +121,30 @@ exports = Class(ui.View, function(supr) {
         this.nexBall = null;
 
         this.charge();
+    };
+
+    /**
+     * Count down balls counter
+     */
+    this.decrementBallsCounter = function() {
+
+        if (this.counter == 0) return;
+        this.counter -= 1;
+        var self = this;
+
+        if (this.counterAnimation) {
+            this.counterAnimation.commit();
+        }
+        this.counterAnimation = animate(this.ballsCounterView)
+            .now({
+                y: this.ballsCounterView.style.y + 20
+            }, 200, animate.easeInQuad)
+            .then(function() {
+                self.ballsCounter.setText(self.counter);
+            })
+            .then({
+                y: this.ballsCounterView.style.y
+            }, 200, animate.easeOutQuad);
     };
 
     /**
@@ -111,7 +165,7 @@ exports = Class(ui.View, function(supr) {
         this.currentBall.style.anchorX = this.currentBall.style.width / 2;
         this.currentBall.style.r = this.barrel.style.r;
 
-        this.currentBall.placeTo(this.cannonBallWindow, this.barrel);
+        this.currentBall.placeTo(this.cannonBallWindow);
         this.nexBall.placeTo(this.nextBallWindow);
     };
 
@@ -119,14 +173,55 @@ exports = Class(ui.View, function(supr) {
      * User tap/click on screen and move mouse/finger
      */
     this.updateTarget = function(point) {
+
+        if (!this.aimingStart) return;
+
         this.target.x = point.x;
         this.target.y = point.y;
+    };
+
+    /**
+     * Check if user presed switcj btn
+     */
+    this.checkIfSwitchPresed = function(point) {
+        var next = this.nextBallView.style;
+        if (intersect.pointAndRect(new Point(point), new Rect(next.x, next.y, next.width, next.height))) {
+            return true;
+        }
+    };
+
+    /**
+     * Exchange current and next ball
+     */
+    this.switchCurrentBall = function() {
+
+        this.nexBall.style.anchorY = this.currentBall.style.anchorY;
+        this.nexBall.style.anchorX = this.currentBall.style.anchorX;
+        this.nexBall.style.r = this.currentBall.style.r;
+
+        var tmp = this.currentBall;
+        this.currentBall = this.nexBall;
+        this.nexBall = tmp;
+
+        this.nexBall.style.anchorY = 0;
+        this.nexBall.style.anchorX = 0;
+        this.nexBall.style.r = 0;
+
+        this.currentBall.placeTo(this.cannonBallWindow);
+        this.nexBall.placeTo(this.nextBallWindow);
     };
 
     /**
      * User put finger or pres down mouse btn
      */
     this.aiming = function(point) {
+
+        if (this.checkIfSwitchPresed(point)) {
+            this.switchCurrentBall();
+            return;
+        }
+
+        this.aimingStart = true;
         this.updateTarget(point);
     };
 
@@ -135,8 +230,12 @@ exports = Class(ui.View, function(supr) {
      */
     this.shot = function(point) {
 
+        if (!this.aimingStart) return;
         this.updateTarget(point);
+        this.aimingStart = false;
+
         if (this.shootDelayDelta < this.shootDelay) return;
+
         this.shootDelayDelta = 0;
 
         this.currentBall.style.anchorY = 0;
@@ -154,6 +253,8 @@ exports = Class(ui.View, function(supr) {
         });
 
         this.charge();
+
+        this.decrementBallsCounter();
     };
 
     /**

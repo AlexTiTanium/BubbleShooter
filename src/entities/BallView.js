@@ -49,11 +49,18 @@ exports = Class(ui.ImageView, function(supr) {
      */
     this.release = function() {
         this.remove = true;
-        //this.velocityVector = null;
+        this.velocityVector = null;
         this.move = false;
         this.dropped = false;
         this.style.visible = false;
         this.speed = Config.ball.ballSpeed;
+    };
+
+    /**
+     * Explode this ball
+     */
+    this.burst = function(doubleScore) {
+        GC.app.emit('score:add', doubleScore ? this.score * 2 : this.score);
     };
 
     /**
@@ -122,6 +129,7 @@ exports = Class(ui.ImageView, function(supr) {
 
         // Release ball after drop down
         if (this.dropped && this.style.y > GC.app.boardViewHeight) {
+            this.burst(true);
             return this.release();
         }
 

@@ -12,7 +12,7 @@ exports = Class(function(supr) {
         this.balls = ballsPool;
         this.ceils = grid.ceils;
         this.hexes = grid.hexes;
-        this.collison = 16;
+        this.collison = 8;
 
         this.gridCursor = 0;
         this.levelGrid = [];
@@ -184,6 +184,7 @@ exports = Class(function(supr) {
         if (found.length < 3) return;
 
         for (var i = 0; i < found.length; i++) {
+            found[i].ball.burst();
             found[i].ball.release();
             found[i].ball = null;
         }

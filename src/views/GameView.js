@@ -1,5 +1,5 @@
 import ui.View as View;
-import src.views.BackgroundView as BackgroundView;
+import src.views.InterfaceView as GameUI;
 import src.views.BoardView as BoardView;
 import src.lib.LevelManager as LevelManager;
 import src.Config as Config;
@@ -28,10 +28,8 @@ exports = Class(View, function(supr) {
      */
     this.build = function() {
 
-        this.background = new BackgroundView(Config.background, this);
-
+        this.ui = new GameUI(Config.ui, this);
         this.board = new BoardView(Config.board, this);
-
         this.level = new LevelManager(Config.levels);
     };
 
@@ -41,8 +39,10 @@ exports = Class(View, function(supr) {
     this.loadLevel = function() {
 
         var level = this.level.getCurrent();
-
         this.board.game.fillGrid(level.grid);
+
+        GC.app.emit('update:level', level.level);
+        GC.app.emit('score:update', 0);
     };
 
     /**

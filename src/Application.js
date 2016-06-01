@@ -61,7 +61,7 @@ exports = Class(GC.Application, function() {
 
         this.deviceAspect = device.screen.width / device.screen.height;
         this.virtualAspect = Config.width / Config.height;
-        this.backgroundAspect = this.baseHeight / Config.background.height;
+        this.backgroundAspect = this.baseHeight / Config.ui.background.height;
 
         this.scale = device.screen.width / this.baseWidth; // application scale
 

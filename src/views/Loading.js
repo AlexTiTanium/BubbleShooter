@@ -27,7 +27,7 @@ exports = Class(ui.View, function(supr) {
             superview: this,
             layout: 'box',
             color: 'white',
-            //fontFamily: 'kenvector_future',
+            fontFamily: 'goonies',
             text: "Loading...",
             size: 30,
             wrap: true

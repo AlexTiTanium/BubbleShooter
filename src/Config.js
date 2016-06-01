@@ -73,35 +73,64 @@ exports = {
         },
     },
 
-    // Background image
-    background: {
-        image: 'resources/images/ui/bg1_center.png',
-        width: 768,
-        height: 1024
-    },
-
-    head: {
-        image: 'resources/images/ui/bg1_header.png',
-        layout: 'box',
-        horizontalAlign: 'center',
-        verticalAlign: 'top',
-        height: 128,
-    },
-
-    bg_left: {
-        image: 'resources/images/ui/bg1_left_corner.png',
-        width: 260,
-        height: 208
-    },
-
-    bg_right: {
-        image: 'resources/images/ui/bg1_right_corner.png',
-        width: 260,
-        height: 212
-    },
-
     levels: [
 		'resources/levels/1.json'
-	]
+	],
+
+    ui: {
+        // Background image
+        background: {
+            image: 'resources/images/ui/bg1_center.png',
+            width: 768,
+            height: 1024
+        },
+
+        level: {
+            image: "resources/images/ui/score.png",
+            width: 200,
+            height: 64,
+            x: 100,
+            y: 10
+        },
+
+        score: {
+            image: "resources/images/ui/score.png",
+            width: 200,
+            height: 64,
+
+        },
+
+        head: {
+            image: 'resources/images/ui/bg1_header.png',
+            layout: 'box',
+            horizontalAlign: 'center',
+            verticalAlign: 'top',
+            height: 128,
+        },
+
+        bg_left: {
+            image: 'resources/images/ui/bg1_left_corner.png',
+            width: 260,
+            height: 208
+        },
+
+        bg_right: {
+            image: 'resources/images/ui/bg1_right_corner.png',
+            width: 260,
+            height: 212
+        },
+
+        next_ball: {
+            image: 'resources/images/ui/next_ball.png',
+            width: 50,
+            height: 49,
+        },
+
+        balls_counter: {
+            image: 'resources/images/ui/balls_counter_bg.png',
+            width: 44,
+            height: 42
+        }
+    }
 
 };

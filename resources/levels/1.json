@@ -1,5 +1,6 @@
 {
 	"balls": 20,
+	"level": 1,
 	"grid":[
 		["any","any","any","any","any","any","any","any","any","any"],
 		["any","any","any","red","any","red","any","any","any","any"],
