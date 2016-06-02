@@ -352,7 +352,7 @@ exports = Class(ParticleEngine, function(supr) {
             pObj.oy = ball.y + ball.height / 2 + Random.integer(-15, 15);
             //pObj.dscale = Random.float(0.2, 0.8);
 
-            pObj.dy = Random.integer(0, -100);
+            pObj.dy = Random.integer(0, -50);
             pObj.dx = Random.integer(-20, 20);
 
             pObj.ttl = 4000;

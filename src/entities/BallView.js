@@ -62,6 +62,7 @@ exports = Class(ui.ImageView, function(supr) {
     this.burst = function(doubleScore) {
         GC.app.emit('score:add', doubleScore ? this.score * 2 : this.score);
         GC.app.emit('particles:ball:destroy', this.type, this.style);
+        GC.app.audio.play('pop');
     };
 
     /**
@@ -114,6 +115,7 @@ exports = Class(ui.ImageView, function(supr) {
         this.move = true;
         this.dropped = true;
         this.speed = Config.ball.dropSpeed; // drop speed
+        GC.app.audio.play('dropdown');
     };
 
     /**
@@ -122,6 +124,7 @@ exports = Class(ui.ImageView, function(supr) {
     this.onCollison = function(targetHex) {
         this.placeTo(targetHex.center);
         GC.app.emit('particles:ball:colided', this.type, this.style);
+        GC.app.audio.play('stick');
     };
 
     /**
@@ -149,6 +152,7 @@ exports = Class(ui.ImageView, function(supr) {
             this.style.x = 0;
             this.velocityVector.x = -this.velocityVector.x;
             GC.app.emit('particles:ball:reflect', this.type, this.style);
+            GC.app.audio.play('reflect');
         }
 
         // reflect right
@@ -157,6 +161,7 @@ exports = Class(ui.ImageView, function(supr) {
             this.style.x -= penetrationDepth / 2;
             this.velocityVector.x = -this.velocityVector.x;
             GC.app.emit('particles:ball:reflect', this.type, this.style);
+            GC.app.audio.play('reflect');
         }
 
         // Move by velocityVector

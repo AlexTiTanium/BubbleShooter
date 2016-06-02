@@ -77,6 +77,39 @@ exports = {
 		'resources/levels/1.json'
 	],
 
+    sound: {
+        env: {
+            path: 'music',
+            volume: 0.1,
+            loop: true,
+            background: true
+        },
+        shot: {
+            path: 'effect',
+            volume: 0.1
+        },
+        pop: {
+            path: 'effect',
+            volume: 0.3
+        },
+        reflect: {
+            path: 'effect',
+            volume: 0.3
+        },
+        dropdown: {
+            path: 'effect',
+            volume: 0.1
+        },
+        rebound: {
+            path: 'effect',
+            volume: 0.1
+        },
+        stick: {
+            path: 'effect',
+            volume: 0.1
+        }
+    },
+
     particles: {
 
         sizes: {

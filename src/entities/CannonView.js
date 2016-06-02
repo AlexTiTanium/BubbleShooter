@@ -212,6 +212,8 @@ exports = Class(ui.View, function(supr) {
 
         this.currentBall.placeTo(this.cannonBallWindow);
         this.nexBall.placeTo(this.nextBallWindow);
+
+        GC.app.audio.play('rebound');
     };
 
     /**
@@ -266,6 +268,7 @@ exports = Class(ui.View, function(supr) {
         });
 
         GC.app.emit('particles:cannon:shoot', startPoint, this.shootingDirection);
+        GC.app.audio.play('shot');
     };
 
     /**

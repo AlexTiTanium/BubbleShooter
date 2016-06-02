@@ -18,10 +18,10 @@ exports = Class(GC.Application, function() {
 
         this.setScale(Config.width, Config.height);
 
-        // this.audio = new AudioManager({
-        //     path: 'resources/sounds',
-        //     files: Config.sound
-        // });
+        this.audio = new AudioManager({
+            path: 'resources/sounds',
+            files: Config.sound
+        });
 
         this.input = new Input({
             superview: this.view
@@ -46,7 +46,7 @@ exports = Class(GC.Application, function() {
      * Fire when assets is ready
      */
     this.onAssetsReady = function() {
-        //this.audio.play('gameplay');
+        this.audio.play('env');
         this.stack.push(this.game);
         this.game.run();
     };
