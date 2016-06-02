@@ -255,6 +255,11 @@ exports = Class(ui.View, function(supr) {
      */
     this.shot = function(point) {
 
+        if (this.counter == 0) {
+            this.aimingStart = false;
+            return;
+        };
+
         if (!this.aimingStart) return;
         this.updateTarget(point);
         this.aimingStart = false;
@@ -288,7 +293,9 @@ exports = Class(ui.View, function(supr) {
         GC.app.audio.play('shot');
 
         if (this.counter == 0) {
-            GC.app.emit('game:gameover');
+            setTimeout(function() {
+                GC.app.emit('game:gameover');
+            }, 1000);
         }
     };
 

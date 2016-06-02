@@ -63,6 +63,8 @@ exports = Class(ui.ImageView, function(supr) {
         this.speed = Config.ball.ballSpeed;
         this.style.anchorY = 0;
         this.style.anchorX = 0;
+        this.style.x = -5000;
+        this.style.y = -5000;
     };
 
     /**

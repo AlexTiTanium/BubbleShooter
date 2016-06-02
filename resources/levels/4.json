@@ -2,15 +2,15 @@
 	"goal": 2000,
 	"level": 4,
 	"grid":[
-		["any","any","any","any", "any", "any", "red", "red", "any", "yellow"],
-		[null, null, null, "red", "any","any","any", "any", "any", "any"],
-		[null, null, "any", "red", "any","any","any", "any", "any", "any"],
-		[null, "any", "green", null, "any", "any", null, "purple", "any", null],
-		[null, "green", null, null, "any", "any", null, null, "purple", null],
-		[null, "green", null, null, "any", "any", null, null, "purple", null],
-		[null, "green", null, null, "any", "any", null, null, "purple", null],
-		[null, "green", null, null, "any", "any", null, null, "purple", null],
-		[null, "any", "yellow", null, null, null, "any", "red", "any", null],
-		[null, null, "any", "red", "any","any","any", "any", null, null]
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","red","any","red","any","any","any","any"],
+		["any","any","any","red","red","red","any","any","any","any"],
+		["any","any","any","red","red","red","any","any","any","any"],
+		["any","any","any","any","red","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		[null,"any","any","any","any","any","any","any","any","any"],
+		[null,"any","any","any","any","any","any","any","any","any"],
+		[null,"any","any","any","any","any","any", null, null, null]
 	]
 }
