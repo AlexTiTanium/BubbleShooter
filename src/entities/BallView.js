@@ -1,5 +1,6 @@
 import ui.ImageView;
 import animate;
+import src.utils.Random as Random;
 import math.geom.Vec2D as Vec2D;
 import src.Config as Config;
 
@@ -71,9 +72,14 @@ exports = Class(ui.ImageView, function(supr) {
      * Explode this ball
      */
     this.burst = function(doubleScore) {
+
         GC.app.emit('score:add', doubleScore ? this.score * 2 : this.score);
+
+        setTimeout(function() {
+            GC.app.audio.play('pop');
+        }, Random.integer(0, 150));
+
         GC.app.emit('particles:ball:destroy', this.type, this.style);
-        GC.app.audio.play('pop');
     };
 
     /**
