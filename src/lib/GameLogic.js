@@ -21,6 +21,16 @@ exports = Class(function(supr) {
     };
 
     /**
+     * Reload game logic
+     */
+    this.reload = function() {
+        this.ceils = this.grid.ceils;
+        this.hexes = this.grid.hexes;
+        this.gridCursor = 0;
+        this.levelGrid = [];
+    };
+
+    /**
      * Init collison check for ball over balls in the grid
      */
     this.beginBallsCollisionCheck = function(ball, collision) {
@@ -77,9 +87,8 @@ exports = Class(function(supr) {
                 }
             }
 
-
             // If ball at the zero row position and hax are empty
-            if (targetHex.row == 0 && !targetHex.ball) {
+            if (targetHex && targetHex.row == 0 && !targetHex.ball) {
                 this.placeBallToHex(ball, targetHex);
             }
         }
@@ -91,7 +100,7 @@ exports = Class(function(supr) {
     this.placeBallToHex = function(ball, hex) {
 
         var haveNeighbors = this.grid.getNeighborsWithBalls(hex);
-        if (hex.row != 0 && haveNeighbors.length == 0) return;
+        if (hex && hex.row != 0 && haveNeighbors.length == 0) return;
 
         hex.ball = ball;
 

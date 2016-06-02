@@ -6,12 +6,12 @@ exports = Class(ui.View, function(supr) {
     /**
      * init
      */
-    this.init = function(opts) {
+    this.init = function() {
 
-        opts = merge(opts, {
+        opts = {
             width: GC.app.baseWidth,
             height: GC.app.baseHeight
-        });
+        };
 
         supr(this, 'init', [opts]);
 
@@ -29,7 +29,7 @@ exports = Class(ui.View, function(supr) {
             color: 'white',
             fontFamily: 'goonies',
             text: "Loading...",
-            size: 30,
+            size: 80,
             wrap: true
         });
     };

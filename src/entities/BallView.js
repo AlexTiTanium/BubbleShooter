@@ -27,6 +27,12 @@ exports = Class(ui.ImageView, function(supr) {
     this.setup = function(type, config, hex) {
 
         this.type = type;
+
+        if (!config) {
+            console.error('Type not found, check balls names', type);
+            return;
+        }
+
         this.score = config.score;
         this.remove = false;
 
@@ -53,7 +59,10 @@ exports = Class(ui.ImageView, function(supr) {
         this.move = false;
         this.dropped = false;
         this.style.visible = false;
+        this.style.r = 0;
         this.speed = Config.ball.ballSpeed;
+        this.style.anchorY = 0;
+        this.style.anchorX = 0;
     };
 
     /**

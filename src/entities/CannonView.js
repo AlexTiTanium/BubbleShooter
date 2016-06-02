@@ -31,10 +31,11 @@ exports = Class(ui.View, function(supr) {
         this.shootDelay = config.shootDelay;
         this.shootDelayDelta = config.shootDelay;
         this.aimingStart = false;
-        this.counter = 50; // balls counter
-        this.targetAngle = 0;
+        this.counter = config.balls; // balls counter
+        this.config = config;
 
         this.build(config);
+        this.reload();
 
         // Listen user input
         GC.app.input.on('target:update', this.updateTarget.bind(this));
@@ -43,48 +44,11 @@ exports = Class(ui.View, function(supr) {
     };
 
     /**
-     * Build cannon sub views
-     */
-    this.build = function(cannon) {
+     * Reload cannon params
+     **/
+    this.reload = function() {
 
-        var bottomOffset = 10;
-
-        this.base = new ImageView(merge(cannon.base, {
-            superview: this,
-            x: this.style.width / 2 - cannon.base.width / 2,
-            y: this.style.height - cannon.base.height - bottomOffset,
-
-        }));
-
-        this.ballsCounterView = new ImageView(merge(Config.ui.balls_counter, {
-            superview: this,
-            x: this.style.width - Config.ui.next_ball.width - 8,
-            y: this.style.height - Config.ui.next_ball.height - 52
-        }));
-
-        this.nextBallView = new ImageView(merge(Config.ui.next_ball, {
-            superview: this,
-            x: this.style.width - Config.ui.next_ball.width - 10,
-            y: this.style.height - Config.ui.next_ball.height - 25
-        }));
-
-        this.ballsCounter = new TextView({
-            superview: this.ballsCounterView,
-            layout: 'box',
-            color: 'black',
-            y: -6,
-            text: this.counter,
-            size: 25,
-            wrap: true
-        });
-
-        this.barrel = new SpriteView(merge(cannon.barrel, {
-            superview: this,
-            anchorX: cannon.barrel.width / 2,
-            anchorY: cannon.barrel.height,
-            x: this.style.width / 2 - cannon.barrel.width / 2,
-            y: this.style.height - cannon.barrel.height - cannon.base.height / 2 - bottomOffset
-        }));
+        var cannon = this.config;
 
         // Rotation anchor point, up vector start point
         this.position = new Point({
@@ -122,8 +86,57 @@ exports = Class(ui.View, function(supr) {
         // Current and next ball property
         this.currentBall = null;
         this.nexBall = null;
+        this.barrel.style.r = 0;
+        this.counter = this.config.balls;
+        this.ballsCounter.setText(this.counter);
 
         this.charge();
+    };
+
+    /**
+     * Build cannon sub views
+     */
+    this.build = function(cannon) {
+
+        var bottomOffset = 10;
+
+        this.base = new ImageView(merge(cannon.base, {
+            superview: this,
+            x: this.style.width / 2 - cannon.base.width / 2,
+            y: this.style.height - cannon.base.height - bottomOffset,
+
+        }));
+
+        this.ballsCounterView = new ImageView(merge(Config.ui.balls_counter, {
+            superview: this,
+            x: this.style.width - Config.ui.next_ball.width - 8,
+            y: this.style.height - Config.ui.next_ball.height - 52
+        }));
+
+        this.nextBallView = new ImageView(merge(Config.ui.next_ball, {
+            superview: this,
+            x: this.style.width - Config.ui.next_ball.width - 10,
+            y: this.style.height - Config.ui.next_ball.height - 25
+        }));
+
+        this.ballsCounter = new TextView({
+            superview: this.ballsCounterView,
+            layout: 'box',
+            color: 'black',
+            y: -6,
+            fontFamily: 'geko',
+            text: this.counter,
+            size: 25,
+            wrap: true
+        });
+
+        this.barrel = new SpriteView(merge(cannon.barrel, {
+            superview: this,
+            anchorX: cannon.barrel.width / 2,
+            anchorY: cannon.barrel.height,
+            x: this.style.width / 2 - cannon.barrel.width / 2,
+            y: this.style.height - cannon.barrel.height - cannon.base.height / 2 - bottomOffset
+        }));
     };
 
     /**
@@ -131,13 +144,15 @@ exports = Class(ui.View, function(supr) {
      */
     this.decrementBallsCounter = function() {
 
+        var self = this;
+
         if (this.counter == 0) return;
         this.counter -= 1;
-        var self = this;
 
         if (this.counterAnimation) {
             this.counterAnimation.commit();
         }
+
         this.counterAnimation = animate(this.ballsCounterView)
             .now({
                 y: this.ballsCounterView.style.y + 20
@@ -227,9 +242,11 @@ exports = Class(ui.View, function(supr) {
         }
 
         this.aimingStart = true;
+
         this.barrel.startAnimation('aiming', {
             loop: true
         });
+
         this.updateTarget(point);
     };
 
@@ -269,6 +286,10 @@ exports = Class(ui.View, function(supr) {
 
         GC.app.emit('particles:cannon:shoot', startPoint, this.shootingDirection);
         GC.app.audio.play('shot');
+
+        if (this.counter == 0) {
+            GC.app.emit('game:gameover');
+        }
     };
 
     /**

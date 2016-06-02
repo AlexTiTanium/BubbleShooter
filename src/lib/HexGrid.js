@@ -15,14 +15,20 @@ exports = Class(function(supr) {
         this.width = Math.sqrt(3) / 2 * (this.radius * 2);
 
         this.hexes = [];
-        this.ceils = this.buildGrid(this.columns, this.rows);
+        this.ceils = [];
+
+        this.buildGrid();
     };
 
     /**
      * Generate hexagon grid
      */
-    this.buildGrid = function(columns, rows) {
+    this.buildGrid = function() {
 
+        var columns = this.columns;
+        var rows = this.rows;
+
+        this.hexes = [];
         var grid = [];
 
         for (var y = 0; y < rows; y++) {
@@ -37,7 +43,7 @@ exports = Class(function(supr) {
             }
         }
 
-        return grid;
+        this.ceils = grid;
     };
 
     /**

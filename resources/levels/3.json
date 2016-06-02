@@ -1,0 +1,18 @@
+{
+	"goal": 2000,
+	"level": 3,
+	"grid":[
+		["any", "red","red", "any", "blue", "any","any","any", "any", "any"],
+			["blue", "any", "any", "any", "any", "any", "any", "any", "any", "yellow"],
+			["red", null, "blue", null,"any", null, "red", null, "any", "any"],
+			["red", null, "blue", null,"any", null, "red", null, "any", null],
+			[null, "red", "any", null, "blue", null, "any", "any", "any", "any"],
+			["purple", "any", "any", "any", "any", "any", "any", "any", "any", "any"],
+			["purple", null, "any", "any", "any", "any", "any", "any", "any", "green"],
+			["green", null, "any", null, "any", null, "any", "any", null, "green"],
+			["yellow", null, "any", null, "any", null, "purple", "purple", null, "green"],
+			["yellow", null, "any", null, "any", null, "purple", "purple", null, "green"],
+			[null, "any", null, null, "purple", null, null, null, "green", null],
+			[null, null, "any", "any", "any", "any", "any", "any", null, null]
+	]
+}

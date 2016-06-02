@@ -24,8 +24,9 @@ exports = {
     },
 
     cannon: {
+        balls: 30,
         ballWindowYoffset: 27,
-        shootDelay: 380,
+        shootDelay: 420,
         barrel: {
             autoStart: true,
             width: 70, //130,
@@ -73,12 +74,19 @@ exports = {
         },
     },
 
+    // Avalible levels
     levels: [
-		'resources/levels/1.json'
+		'resources/levels/1.json',
+		'resources/levels/2.json',
+		'resources/levels/3.json',
+		'resources/levels/4.json',
+		'resources/levels/5.json',
+		'resources/levels/6.json',
+		'resources/levels/7.json'
 	],
 
     sound: {
-        env: {
+        music: {
             path: 'music',
             volume: 0.1,
             loop: true,
@@ -105,6 +113,18 @@ exports = {
             volume: 0.1
         },
         stick: {
+            path: 'effect',
+            volume: 0.1
+        },
+        start: {
+            path: 'effect',
+            volume: 0.1
+        },
+        win: {
+            path: 'effect',
+            volume: 0.1
+        },
+        fail: {
             path: 'effect',
             volume: 0.1
         }
@@ -200,6 +220,24 @@ exports = {
             image: 'resources/images/ui/balls_counter_bg.png',
             width: 44,
             height: 42
+        },
+
+        popup: {
+            image: 'resources/images/ui/popup.png',
+            width: 500,
+            height: 532
+        },
+
+        play_btn: {
+            image: 'resources/images/ui/play.png',
+            width: 144,
+            height: 142
+        },
+
+        return_btn: {
+            image: 'resources/images/ui/return.png',
+            width: 144,
+            height: 142
         }
     }
 

@@ -49,6 +49,24 @@ exports = Class(ui.ViewPool, function(supr) {
         return ball;
     };
 
+    /**
+     * Reload pool
+     */
+    this.reload = function() {
+
+        for (var i = this.balls.length; i--;) {
+
+            var ball = this.balls[i];
+            ball.release();
+            this.releaseView(ball);
+            this.balls.splice(i, 1);
+        }
+
+        this.releaseAllViews();
+
+        this.balls = [];
+    };
+
     /*
      * Move balls in pool
      */

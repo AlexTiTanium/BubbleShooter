@@ -2,27 +2,23 @@ import ui.View as View;
 
 exports = Class(View, function(supr) {
 
-    this.name = "UserInputListener";
-    this.tag = "UserInputListener";
     this.id = "UserInputListener";
 
     /**
      * init
      */
-    this.init = function(opts) {
+    this.init = function(appView) {
 
-        opts.blockEvents = false;
-
-        opts = merge(opts, {
-            x: 0,
-            y: 0,
-            superview: opts.superview,
+        opts = {
+            superview: appView,
             width: GC.app.baseWidth,
             height: GC.app.baseHeight,
-            zIndex: 30
-        });
+            zIndex: 20,
+            blockEvents: false
+        };
 
         this.event_id = null;
+        this.pause = false;
 
         supr(this, 'init', [opts]);
     };
@@ -41,11 +37,16 @@ exports = Class(View, function(supr) {
      * On mouse key down
      **/
     this.onInputStart = function(event, point) {
+
+        //console.log(event);
+        this.emit('ui:input:start', event, point);
+
+        if (this.pause) return;
         if (this.event_id === null) {
             this.event_id = event.id;
             point = this.translateToBoardViewCoordianates(point);
-            this.emit('target:update', point);
-            this.emit('input:start', point);
+            this.emit('target:update', point, event);
+            this.emit('input:start', point, event);
         }
     }
 
@@ -53,9 +54,13 @@ exports = Class(View, function(supr) {
      * On mouse move
      **/
     this.onInputMove = function(event, point) {
+
+        this.emit('ui:input:move', event, point);
+
+        if (this.pause) return;
         if (this.event_id !== null && this.event_id == event.id) {
             point = this.translateToBoardViewCoordianates(point);
-            this.emit('target:update', point);
+            this.emit('target:update', point, event);
         }
     }
 
@@ -63,10 +68,14 @@ exports = Class(View, function(supr) {
      * On mouse key up
      **/
     this.onInputSelect = function(event, point) {
+
+        this.emit('ui:input:stop', event, point);
+
+        if (this.pause) return;
         if (this.event_id !== null && this.event_id == event.id) {
             point = this.translateToBoardViewCoordianates(point);
-            this.emit('target:update', point);
-            this.emit('input:stop', point);
+            this.emit('target:update', point, event);
+            this.emit('input:stop', point, event);
             this.event_id = null;
         }
     }

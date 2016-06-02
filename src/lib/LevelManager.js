@@ -17,4 +17,21 @@ exports = Class(function(supr) {
         return JSON.parse(CACHE[this.levels[this.current]]);
     };
 
+    /**
+     * Switch to next level
+     */
+    this.next = function() {
+
+        this.current += 1;
+
+        if (!this.levels[this.current]) {
+            this.current = 0;
+            return;
+        }
+
+        if (!CACHE[this.levels[this.current]]) {
+            this.current = 0;
+        }
+    };
+
 });

@@ -59,6 +59,16 @@ exports = Class(ui.View, function(supr) {
     };
 
     /**
+     * Restart board
+     */
+    this.reload = function() {
+        this.grid.buildGrid();
+        this.balls.reload();
+        this.cannon.reload();
+        this.game.reload();
+    };
+
+    /**
      * Move board objects
      */
     this.update = function(dt) {

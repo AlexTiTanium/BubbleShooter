@@ -1,6 +1,6 @@
 {
-	"goal": 2000,
-	"level": 1,
+	"goal": 4000,
+	"level": 6,
 	"grid":[
 		["any","any","any","any","any","any","any","any","any","any"],
 		["any","any","any","red","any","red","any","any","any","any"],
@@ -9,8 +9,8 @@
 		["any","any","any","any","red","any","any","any","any","any"],
 		["any","any","any","any","any","any","any","any","any","any"],
 		["any","any","any","any","any","any","any","any","any","any"],
-		[null,"any","any","any","any","any","any","any","any","any"],
-		[null,"any","any","any","any","any","any","any","any","any"],
-		[null,"any","any","any","any","any","any", null, null]
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"],
+		["any","any","any","any","any","any","any","any","any","any"]
 	]
 }

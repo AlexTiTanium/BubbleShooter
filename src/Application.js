@@ -1,9 +1,8 @@
 import device;
 import AudioManager;
 import ui.StackView as StackView;
+import src.lib.UserInput as Input;
 import ui.resource.loader as loader;
-
-import src.views.UserInput as Input;
 import src.views.Loading as Loading;
 import src.views.GameView as GameView;
 
@@ -23,9 +22,7 @@ exports = Class(GC.Application, function() {
             files: Config.sound
         });
 
-        this.input = new Input({
-            superview: this.view
-        });
+        this.input = new Input(this.view);
 
         this.stack = new StackView({
             superview: this,
@@ -34,8 +31,8 @@ exports = Class(GC.Application, function() {
             clip: true
         });
 
-        this.game = new GameView({});
-        this.loading = new Loading({});
+        this.game = new GameView();
+        this.loading = new Loading();
 
         this.stack.push(this.loading);
 
@@ -46,7 +43,7 @@ exports = Class(GC.Application, function() {
      * Fire when assets is ready
      */
     this.onAssetsReady = function() {
-        this.audio.play('env');
+        this.audio.play('music');
         this.stack.push(this.game);
         this.game.run();
     };
