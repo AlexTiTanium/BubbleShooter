@@ -12,5 +12,18 @@
   "supportedOrientations": [
     "portrait"
   ],
+  "browser": {
+    "canvas": {
+      "height": 640,
+      "useWebGL": true,
+      "width": 480
+    },
+    "openGraph": {
+      "description": "Bubble Shooter",
+      "title": "Bubble Shooter",
+      "type": "game",
+      "url": "http://bubble-shooter.xogames.org"
+    }
+  },
   "title": "Bubble Shooter"
 }
